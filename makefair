@@ -1,0 +1,37 @@
+########################################
+# Makefile for
+# the FAIR UnPacker 
+##########################################
+CPP=g++ -std=c++11
+SYSLIB = -lz  
+ROOTLIB = `root-config --cflags --libs`
+CPPFLAG = -O2 -I `root-config --incdir` 
+
+PROG = ReadFair
+SOURCE = ReadFair.cpp
+
+OBJ = configurator.o EventBuffer.o mask.o Monitor.o RootEvent.o
+
+all: $(PROG) 
+
+$(PROG): $(SOURCE) $(OBJ)
+	$(CPP) $(CPPFLAG) -o $(PROG) $(SOURCE) $(OBJ) $(SYSLIB) $(ROOTLIB)
+
+configurator.o: configurator.cc configurator.h
+	$(CPP) $(CPPFLAG) -c configurator.cc
+
+EventBuffer.o: EventBuffer.cc EventBuffer.h
+	$(CPP) $(CPPFLAG) -c EventBuffer.cc	
+
+mask.o: mask.cc mask.h
+	$(CPP) $(CPPFLAG) -c mask.cc
+        
+Monitor.o : Monitor.cc Monitor.h
+	$(CPP) $(CPPFLAG) -c Monitor.cc
+
+RootEvent.o : RootEvent.cc RootEvent.h
+	$(CPP) $(CPPFLAG) -c RootEvent.cc	
+	
+clean:
+	@rm *.o
+	@rm $(PROG)
